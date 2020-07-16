@@ -1,0 +1,4 @@
+repository:
+  type: InMemory
+  alwaysUrl: https://shorten.fifth-postulate.nl
+
