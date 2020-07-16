@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class ChainedTest {
     @Test
-    fun `a chained repository delegates to first sub repository that loads a datasheet`() {
+    fun `a chained repository delegates to the first sub repository that loads a datasheet`() {
         val repository = Chained(
                 InMemory(),
                 InMemory(mapOf("shrt" to DataSheet("shrt", "http://first.nl"))),
