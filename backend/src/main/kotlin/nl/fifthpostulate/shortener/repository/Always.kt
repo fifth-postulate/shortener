@@ -3,8 +3,8 @@ package nl.fifthpostulate.shortener.repository
 import nl.fifthpostulate.shortener.domain.DataSheet
 import org.springframework.stereotype.Component
 
-class HardCoded : ShortRepository {
+class Always(val url: String) : ShortRepository {
     override fun load(short: String): DataSheet? {
-        return DataSheet(short, "https://shorten.fifth-postulate.nl")
+        return DataSheet(short, url)
     }
 }
