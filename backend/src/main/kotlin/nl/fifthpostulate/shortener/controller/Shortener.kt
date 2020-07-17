@@ -1,6 +1,5 @@
 package nl.fifthpostulate.shortener.controller
 
-import nl.fifthpostulate.shortener.config.RepositoryProperties
 import nl.fifthpostulate.shortener.domain.DataSheet
 import nl.fifthpostulate.shortener.repository.ShortRepository
 import org.springframework.web.bind.annotation.*
@@ -15,10 +14,17 @@ class Shortener(val repository: ShortRepository<DataSheet>) {
     }
 
     @PutMapping("/{short}")
-    fun store(@PathVariable short: String, @RequestBody shortenRequest: ShortenRequest) {
-        val dataSheet = DataSheet(short, shortenRequest.url)
+    fun store(@PathVariable short: String, @RequestBody command: ShortCommand) {
+        val dataSheet = DataSheet(short, command.url)
+        repository.save(dataSheet)
+    }
+
+    @PostMapping("/")
+    fun storeWithGeneratedShort(@RequestBody command: ShortCommand) {
+        val short = "generatedShort"
+        val dataSheet = DataSheet(short, command.url)
         repository.save(dataSheet)
     }
 }
 
-data class ShortenRequest(val url: String){}
+data class ShortCommand(val url: String)
