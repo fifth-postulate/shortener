@@ -32,4 +32,14 @@ class InMemoryTest {
 
         assertThat(dataSheet).isNotNull()
     }
+
+    @Test
+    fun `an InMemory repository increments accessed on every load`() {
+        val repository = InMemory(mutableMapOf("shrt" to DataSheet("shrt", "http://local.test")))
+
+        repository.load("shrt")
+        val dataSheet = repository.load("shrt")
+
+        assertThat(dataSheet).isEqualTo(DataSheet("shrt", "http://local.test", accessed=2))
+    }
 }
