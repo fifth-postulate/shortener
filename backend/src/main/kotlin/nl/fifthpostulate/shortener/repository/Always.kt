@@ -2,8 +2,8 @@ package nl.fifthpostulate.shortener.repository
 
 import nl.fifthpostulate.shortener.domain.DataSheet
 
-class Always(val url: String) : ShortRepository {
-    override fun load(short: String): DataSheet? {
+class Always(val url: String) : ShortRepository<DataSheet> {
+    override fun load(short: String): DataSheet {
         return DataSheet(short, url)
     }
 

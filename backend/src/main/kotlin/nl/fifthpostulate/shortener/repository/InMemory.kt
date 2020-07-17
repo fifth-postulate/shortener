@@ -2,14 +2,14 @@ package nl.fifthpostulate.shortener.repository
 
 import nl.fifthpostulate.shortener.domain.DataSheet
 
-class InMemory(val entries: MutableMap<String, DataSheet> = HashMap()) : ShortRepository {
+class InMemory(val entries: MutableMap<String, DataSheet> = HashMap()) : ShortRepository<DataSheet?> {
     override fun load(short: String): DataSheet? {
-        val dataSheet = entries.get(short)
+        val dataSheet = entries[short]
         dataSheet?.loaded()
-        return entries.get(short)
+        return dataSheet
     }
 
     override fun save(dataSheet: DataSheet) {
-        entries.put(dataSheet.short, dataSheet)
+        entries[dataSheet.short] = dataSheet
     }
 }

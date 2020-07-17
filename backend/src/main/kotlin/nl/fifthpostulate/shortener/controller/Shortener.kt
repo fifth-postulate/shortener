@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-class Shortener(val repository: ShortRepository, val repositoryProperties: RepositoryProperties) {
+class Shortener(val repository: ShortRepository<DataSheet>) {
     @GetMapping("/{short}")
     fun redirect(@PathVariable short: String, response: HttpServletResponse) {
         val dataSheet = repository.load(short)
-        val url = dataSheet?.url ?: repositoryProperties.fallBackUrl
-        response.sendRedirect(url)
+        response.sendRedirect(dataSheet.url)
     }
 
     @PutMapping("/{short}")
