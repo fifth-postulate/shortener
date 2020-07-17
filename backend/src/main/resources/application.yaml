@@ -1,4 +1,5 @@
 repository:
   type: InMemory
-  alwaysUrl: https://shorten.fifth-postulate.nl
+  fallBackUrl: https://shorten.fifth-postulate.nl
+  suggestionUrl: https://shorten.fifth-postulate.nl/
 

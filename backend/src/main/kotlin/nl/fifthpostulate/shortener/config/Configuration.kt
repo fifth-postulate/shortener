@@ -1,9 +1,6 @@
 package nl.fifthpostulate.shortener.config
 
-import nl.fifthpostulate.shortener.repository.Always
-import nl.fifthpostulate.shortener.repository.Chained
-import nl.fifthpostulate.shortener.repository.InMemory
-import nl.fifthpostulate.shortener.repository.ShortRepository
+import nl.fifthpostulate.shortener.repository.*
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +15,7 @@ class Configuration {
         val repository = when (RepositoryType.valueOf(properties.type)) {
             RepositoryType.InMemory -> InMemory()
         }
-        return Chained(repository, Always(properties.alwaysUrl))
+        return Chained(repository, Suggestion(properties.suggestionUrl))
     }
 }
 

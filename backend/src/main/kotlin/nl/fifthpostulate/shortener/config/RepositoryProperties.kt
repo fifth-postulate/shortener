@@ -5,5 +5,4 @@ import org.springframework.boot.context.properties.ConstructorBinding
 
 @ConstructorBinding
 @ConfigurationProperties("repository")
-data class RepositoryProperties(val type: String, val alwaysUrl: String) {
-}
+data class RepositoryProperties(val type: String, val fallBackUrl: String, var suggestionUrl: String) {}
