@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Browser
-import Debug
 import Html exposing (Html)
 import Html.Attributes as Attribute
 import Html.Events as Event
@@ -56,7 +55,7 @@ view model =
             shorteningView
 
         Failure error ->
-            whoops <| Debug.toString error
+            whoops "Problems with retrieving a response" 
 
         Success (Shortened sheet) ->
             successView sheet
