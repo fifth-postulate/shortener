@@ -12,4 +12,8 @@ class Chained(vararg val repositories : ShortRepository) : ShortRepository {
         }
         return null
     }
+
+    override fun save(dataSheet: DataSheet) {
+        repositories.firstOrNull()?.save(dataSheet)
+    }
 }

@@ -16,11 +16,20 @@ class InMemoryTest {
 
     @Test
     fun `an prepopulated InMemory repository knows about the prepopulated shorts`() {
-        val repository = InMemory(mapOf("shrt" to DataSheet("shrt", "http://local.test")))
+        val repository = InMemory(mutableMapOf("shrt" to DataSheet("shrt", "http://local.test")))
 
         val dataSheet = repository.load("shrt")
 
         assertThat(dataSheet).isNotNull()
-        assertThat(dataSheet).isEqualTo(DataSheet("shrt", "http://local.test"))
+    }
+
+    @Test
+    fun `an InMemory repository can save a short`() {
+        val repository = InMemory()
+        repository.save(DataSheet("shrt", "http://local.test"))
+
+        val dataSheet = repository.load("shrt")
+
+        assertThat(dataSheet).isNotNull()
     }
 }
