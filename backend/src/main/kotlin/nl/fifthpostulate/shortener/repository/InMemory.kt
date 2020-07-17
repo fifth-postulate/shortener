@@ -9,7 +9,12 @@ class InMemory(val entries: MutableMap<String, DataSheet> = HashMap()) : ShortRe
         return dataSheet
     }
 
-    override fun save(dataSheet: DataSheet) {
-        entries[dataSheet.short] = dataSheet
+    override fun save(dataSheet: DataSheet): Result {
+        if (!entries.containsKey(dataSheet.short)) {
+            entries[dataSheet.short] = dataSheet
+            return Success(dataSheet)
+        } else {
+            return Failure("short '${dataSheet.short}' is taken")
+        }
     }
 }

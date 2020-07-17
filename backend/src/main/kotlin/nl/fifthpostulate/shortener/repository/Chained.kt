@@ -13,7 +13,7 @@ class Chained<T>(val fallback : ShortRepository<T>, vararg val repositories : Sh
         return fallback.load(short)
     }
 
-    override fun save(dataSheet: DataSheet) {
-        repositories.firstOrNull()?.save(dataSheet)
+    override fun save(dataSheet: DataSheet): Result {
+        return repositories.firstOrNull()?.save(dataSheet) ?: Failure("no repositories to save to")
     }
 }

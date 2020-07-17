@@ -7,7 +7,8 @@ class Always(val url: String) : ShortRepository<DataSheet> {
         return DataSheet(short, url)
     }
 
-    override fun save(dataSheet: DataSheet) {
+    override fun save(dataSheet: DataSheet): Success {
         /* It would not be always the same if we could change it, so do nothing */
+        return Success(dataSheet)
     }
 }

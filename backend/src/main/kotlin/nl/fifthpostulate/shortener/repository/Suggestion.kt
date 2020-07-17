@@ -7,7 +7,8 @@ class Suggestion(val suggestionUrl: String): ShortRepository<DataSheet> {
         return DataSheet(short, suggestionUrl + short)
     }
 
-    override fun save(dataSheet: DataSheet) {
+    override fun save(dataSheet: DataSheet): Success {
         /* Suggestions are configured and can't be changed programmatically */
+        return Success(dataSheet)
     }
 }
