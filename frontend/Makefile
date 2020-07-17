@@ -3,7 +3,7 @@
 SOURCE_DIR=src
 BUILD_DIR=web/js
 
-all: ${BUILD_DIR}/Main.min.js
+all: ${BUILD_DIR}/Main.min.js ${BUILD_DIR}/Main.dev.js
 	@echo "finished building"
 
 ${BUILD_DIR}/%.min.js: ${BUILD_DIR}/%.js
@@ -11,3 +11,6 @@ ${BUILD_DIR}/%.min.js: ${BUILD_DIR}/%.js
 
 ${BUILD_DIR}/%.js: ${SOURCE_DIR}/%.elm
 	elm make $< --optimize --output=$@
+
+${BUILD_DIR}/%.dev.js: ${SOURCE_DIR}/%.elm
+	elm make $< --debug --output=$@
