@@ -9,5 +9,5 @@ interface ShortRepository<T> {
 }
 
 sealed class Result(val type: String){}
-class Success(@JsonUnwrapped val dataSheet: DataSheet): Result("ok") {}
-class Failure(val reason: String): Result("error") {}
+class Success(@JsonUnwrapped val dataSheet: DataSheet): Result("success") {}
+class Failure(val reason: String): Result("failure") {}
