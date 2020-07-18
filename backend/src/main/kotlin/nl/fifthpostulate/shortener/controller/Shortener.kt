@@ -2,12 +2,13 @@ package nl.fifthpostulate.shortener.controller
 
 import nl.fifthpostulate.shortener.domain.DataSheet
 import nl.fifthpostulate.shortener.repository.*
+import nl.fifthpostulate.shortener.short.ShortenStrategy
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 
 @CrossOrigin("*")
 @RestController
-class Shortener(val repository: ShortRepository<DataSheet>) {
+class Shortener(val repository: ShortRepository<DataSheet>, val short: ShortenStrategy) {
     @GetMapping("/{short}")
     fun redirect(@PathVariable short: String, response: HttpServletResponse) {
         val dataSheet = repository.load(short)
@@ -22,8 +23,7 @@ class Shortener(val repository: ShortRepository<DataSheet>) {
 
     @PostMapping("/")
     fun storeWithGeneratedShort(@RequestBody command: ShortCommand): Result {
-        val short = "generatedShort"
-        val dataSheet = DataSheet(short, command.url)
+        val dataSheet = DataSheet(short.of(command.url), command.url)
         return repository.save(dataSheet)
     }
 }
