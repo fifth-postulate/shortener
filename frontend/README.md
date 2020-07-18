@@ -10,4 +10,7 @@ To run the application execute
 elm reactor
 ```
 
+### Building
+There is a `Makefile` that builds all the artifacts. The `web` folder can be considered as a unit of deployment.
+
 [elm]: https://elm-lang.org/
