@@ -2,3 +2,6 @@ repository:
   type: InMemory
   fallBackUrl: https://shorten.fifth-postulate.nl
   suggestionUrl: https://shorten.fifth-postulate.nl/
+
+shortenstrategy:
+  type: InOrder
