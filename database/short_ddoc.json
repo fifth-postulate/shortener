@@ -1,8 +1,0 @@
-{
-  "_id": "_design/short",
-  "views": {
-    "events": {
-      "map": "function(doc) {\n    if (doc.type === 'creation') {\n        emit([doc.short, doc.type], { type: doc.type, url: doc.url });\n    }\n    if (doc.type === 'retrieve') {\n        emit([doc.short, doc.type], 1);\n    }\n}"
-    }
-  }
-}
