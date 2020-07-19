@@ -4,4 +4,9 @@ repository:
   suggestionUrl: https://shorten.fifth-postulate.nl/
 
 shortenstrategy:
-  type: InOrder
+  type: StoreBacked
+
+couchdb:
+  url: http://localhost:5984/shortener
+  username: admin
+  password: password
