@@ -2,7 +2,7 @@ http:
   timeout: 5000
 
 repository:
-  type: InMemory
+  type: Store
   fallBackUrl: https://shorten.fifth-postulate.nl
   suggestionUrl: https://shorten.fifth-postulate.nl/
 
