@@ -5,10 +5,15 @@ import nl.fifthpostulate.shortener.repository.Chained
 import nl.fifthpostulate.shortener.repository.InMemory
 import nl.fifthpostulate.shortener.repository.ShortRepository
 import nl.fifthpostulate.shortener.repository.Suggestion
+import nl.fifthpostulate.shortener.result.Failure
+import nl.fifthpostulate.shortener.result.Result
+import nl.fifthpostulate.shortener.result.Success
 import nl.fifthpostulate.shortener.service.couchdb.CouchDBService
+import nl.fifthpostulate.shortener.service.couchdb.Query
 import nl.fifthpostulate.shortener.short.Sequential
 import nl.fifthpostulate.shortener.short.ShortenStrategy
 import nl.fifthpostulate.shortener.short.StoreBacked
+import nl.fifthpostulate.shortener.short.successor
 import nl.fifthpostulate.shortener.store.CouchDB
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
@@ -35,7 +40,8 @@ class Configuration {
             ShortenStrategyType.InOrder -> Sequential("aaa")
             ShortenStrategyType.StoreBacked -> {
                 val service = context.getBean(CouchDBService::class.java)
-                StoreBacked(Sequential("aaa"), CouchDB(service))
+                val last = lastShort(service).withDefault("aaa")
+                StoreBacked(Sequential(successor(last)), CouchDB(service))
             }
         }
         return strategy
@@ -51,4 +57,11 @@ enum class ShortenStrategyType {
     StoreBacked
 }
 
-
+fun lastShort(service: CouchDBService): Result<Unit, String> {
+    val resultSet = service.view("_design/short/_view/shorts", Query("descending", "true"), Query("limit", "1"))
+    return when(resultSet) {
+        is Success -> Success(resultSet.data.rows[0].key)
+        is Failure -> Failure(Unit)
+    }
+}
+class ShortDocument(val id:String, val key: String, val value: Int)

@@ -1,6 +1,7 @@
 package nl.fifthpostulate.shortener.service.couchdb
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import nl.fifthpostulate.shortener.config.ShortDocument
 
 abstract class Document {
     abstract val id: String?
@@ -31,3 +32,5 @@ data class Attachment(
         return result
     }
 }
+
+class ResultSet(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<ShortDocument>) {}

@@ -8,7 +8,7 @@ class Sequential(var next: String = "a", val last: Char = 'z') : ShortenStrategy
     }
 }
 
-fun successor(current: String, last: Char): String {
+fun successor(current: String, last: Char = 'z'): String {
     var characters = current.toCharArray()
     var index = 0
     while (index < characters.size && characters[index] == last) {
