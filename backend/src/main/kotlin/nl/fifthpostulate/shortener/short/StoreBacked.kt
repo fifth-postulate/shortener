@@ -1,6 +1,6 @@
 package nl.fifthpostulate.shortener.short
 
-import nl.fifthpostulate.shortener.store.Failure
+import nl.fifthpostulate.shortener.result.*
 import nl.fifthpostulate.shortener.store.Store
 
 class StoreBacked(val sequential: Sequential, val store: Store) : ShortenStrategy {

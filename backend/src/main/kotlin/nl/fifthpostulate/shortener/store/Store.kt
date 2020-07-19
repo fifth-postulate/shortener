@@ -1,9 +1,7 @@
 package nl.fifthpostulate.shortener.store
 
-interface Store {
-    fun claim(candidate: String): StoreResult
-}
+import nl.fifthpostulate.shortener.result.Result
 
-sealed class StoreResult(){}
-class Success(): StoreResult(){}
-class Failure(): StoreResult(){}
+interface Store {
+    fun claim(candidate: String): Result<Unit, Unit>
+}

@@ -3,12 +3,12 @@ package nl.fifthpostulate.shortener.service.couchdb
 import org.springframework.http.*
 import org.springframework.stereotype.Component
 import org.springframework.util.Base64Utils.encodeToString
-import org.springframework.web.client.HttpClientErrorException
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.*
+import nl.fifthpostulate.shortener.result.*
 
 @Component
 class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionProperties) {
-    fun save(document: Document): SaveResult {
+    fun save(document: Document): Result<Unit, Unit> {
         val base64UsernameAndPassword =
                 encodeToString("${properties.username}:${properties.password}".toByteArray())
         val headers = HttpHeaders()
@@ -20,18 +20,18 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
             return response.toResult()
         } catch (e: HttpClientErrorException) {
             if (e.statusCode == HttpStatus.CONFLICT) {
-                return Failure()
+                return Failure(Unit)
             }
             throw e
         }
     }
 }
 
-private fun ResponseEntity<Response>.toResult(): SaveResult {
+private fun ResponseEntity<Response>.toResult(): Result<Unit, Unit> {
     if (this.body?.ok ?: false) {
-        return Success()
+        return Success(Unit)
     } else {
-        return Failure()
+        return Failure(Unit)
     }
 }
 
@@ -42,7 +42,3 @@ class Response(
         val error: String?,
         val reason: String?
 )
-
-sealed class SaveResult(){}
-class Success(): SaveResult(){}
-class Failure(): SaveResult(){}
