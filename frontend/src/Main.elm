@@ -157,7 +157,7 @@ decoderSwitch : String -> Decoder ShortenOutcome
 decoderSwitch outcomeType =
     case outcomeType of
         "success" ->
-            Decode.map Shortened sheetDecoder
+            Decode.field "data" <| Decode.map Shortened sheetDecoder
 
         _ ->
             Decode.map Problem problemDecoder

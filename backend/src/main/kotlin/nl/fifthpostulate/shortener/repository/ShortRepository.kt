@@ -1,13 +1,9 @@
 package nl.fifthpostulate.shortener.repository
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped
 import nl.fifthpostulate.shortener.domain.DataSheet
+import nl.fifthpostulate.shortener.result.Result
 
 interface ShortRepository<T> {
     fun load(short: String): T
-    fun save(dataSheet: DataSheet): Result
+    fun save(dataSheet: DataSheet): Result<String, DataSheet>
 }
-
-sealed class Result(val type: String){}
-class Success(@JsonUnwrapped val dataSheet: DataSheet): Result("success") {}
-class Failure(val reason: String): Result("failure") {}

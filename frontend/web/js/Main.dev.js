@@ -10863,7 +10863,10 @@ var $author$project$Main$sheetDecoder = A3(
 	A2($elm$json$Json$Decode$field, 'url', $elm$json$Json$Decode$string));
 var $author$project$Main$decoderSwitch = function (outcomeType) {
 	if (outcomeType === 'success') {
-		return A2($elm$json$Json$Decode$map, $author$project$Main$Shortened, $author$project$Main$sheetDecoder);
+		return A2(
+			$elm$json$Json$Decode$field,
+			'data',
+			A2($elm$json$Json$Decode$map, $author$project$Main$Shortened, $author$project$Main$sheetDecoder));
 	} else {
 		return A2($elm$json$Json$Decode$map, $author$project$Main$Problem, $author$project$Main$problemDecoder);
 	}
