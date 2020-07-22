@@ -11,14 +11,8 @@ import org.springframework.core.ParameterizedTypeReference
 @Component
 class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionProperties) {
     fun save(document: Document): Result<Unit, Unit> {
-        val base64UsernameAndPassword =
-                encodeToString("${properties.username}:${properties.password}".toByteArray())
-        val headers = HttpHeaders()
-        headers["content-type"] = MediaType.APPLICATION_JSON_VALUE
-        headers["Authorization"] = "Basic $base64UsernameAndPassword"
-
         try {
-            val response = restTemplate.exchange(properties.url, HttpMethod.POST, HttpEntity(document, headers), Response::class.java)
+            val response = restTemplate.exchange(properties.url, HttpMethod.POST, HttpEntity(document), Response::class.java)
             return response.toResult()
         } catch (e: HttpClientErrorException) {
             if (e.statusCode == HttpStatus.CONFLICT) {
@@ -29,28 +23,16 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
     }
 
     fun view(viewName: String, vararg queries: Query): Result<Unit,ResultSet> {
-        val base64UsernameAndPassword =
-                encodeToString("${properties.username}:${properties.password}".toByteArray())
-        val headers = HttpHeaders()
-        headers["content-type"] = MediaType.APPLICATION_JSON_VALUE
-        headers["Authorization"] = "Basic $base64UsernameAndPassword"
-
         val query = queries.joinToString("&")
         val url = "${properties.url}/${viewName}?${query}"
-        val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, headers), ResultSet::class.java)
+        val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), ResultSet::class.java)
         return response.toResultSet()
     }
 
     fun specialView(viewName: String, vararg queries: Query): Result<Unit,EventResultSet> {
-        val base64UsernameAndPassword =
-                encodeToString("${properties.username}:${properties.password}".toByteArray())
-        val headers = HttpHeaders()
-        headers["content-type"] = MediaType.APPLICATION_JSON_VALUE
-        headers["Authorization"] = "Basic $base64UsernameAndPassword"
-
         val query = queries.joinToString("&")
         val url = "${properties.url}/${viewName}?${query}"
-        val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, headers), EventResultSet::class.java)
+        val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), EventResultSet::class.java)
         return response.toResultSet()
     }
 }

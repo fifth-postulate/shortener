@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import nl.fifthpostulate.shortener.config.ShortDocument
 import nl.fifthpostulate.shortener.store.Event
 
-open class Document(@JsonProperty("_id") val id: String? = null, val revision: String? = null, var attachments: Map<String, Attachment>? = null) {}
+open class Document(@param:JsonProperty("_id") @get:JsonProperty("_id") val id: String? = null, val revision: String? = null, var attachments: Map<String, Attachment>? = null) {}
 
 data class Attachment(
         @JsonProperty("content_type")

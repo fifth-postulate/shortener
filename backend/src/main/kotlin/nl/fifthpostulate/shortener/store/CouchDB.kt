@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 @Component
 class CouchDB(val service: CouchDBService) : Store {
     override fun claim(candidate: String): Result<Unit, Unit> {
-        return service.save(Claim(candidate))
+        val document = Claim(candidate)
+        return service.save(document)
     }
 
     override fun store(dataSheet: DataSheet): Result<String, Unit> {
@@ -24,20 +25,21 @@ class CouchDB(val service: CouchDBService) : Store {
         val result = service.specialView("_design/short/_view/events", Query("startkey", short), Query("endkey", short))
         return when (result) {
             is Success -> {
-                // TODO send retrieve event
                 val url = result.data.rows.filter { it.value?.type == "created" }.firstOrNull()?.value?.url
                         ?: "http://todo.com"
                 val accessed = result.data.rows.filter { it.value?.type == "retrieved" }.count()
-                Success(DataSheet(short, url, accessed))
+                val dataSheet = DataSheet(short, url, accessed)
+                service.save(Retrieved(dataSheet))
+                Success(dataSheet)
             }
             is Failure -> Failure("no events found for ${short}")
         }
     }
 }
 
-data class Claim(val short: String) : Document()
+data class Claim(val short: String) : Document(id="claim:${short}")
 
-sealed class EventInput(val type: String, @JsonUnwrapped val dataSheet: DataSheet) : Document()
+sealed class EventInput(val type: String, @param:JsonUnwrapped @get:JsonUnwrapped val dataSheet: DataSheet) : Document()
 class Created(dataSheet: DataSheet) : EventInput("created", dataSheet)
 class Retrieved(dataSheet: DataSheet) : EventInput("retrieved", dataSheet)
 
