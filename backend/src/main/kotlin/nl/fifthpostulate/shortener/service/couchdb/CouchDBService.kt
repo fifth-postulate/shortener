@@ -40,9 +40,22 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
         val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, headers), ResultSet::class.java)
         return response.toResultSet()
     }
+
+    fun specialView(viewName: String, vararg queries: Query): Result<Unit,EventResultSet> {
+        val base64UsernameAndPassword =
+                encodeToString("${properties.username}:${properties.password}".toByteArray())
+        val headers = HttpHeaders()
+        headers["content-type"] = MediaType.APPLICATION_JSON_VALUE
+        headers["Authorization"] = "Basic $base64UsernameAndPassword"
+
+        val query = queries.joinToString("&")
+        val url = "${properties.url}/${viewName}?${query}"
+        val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, headers), EventResultSet::class.java)
+        return response.toResultSet()
+    }
 }
 
-private fun ResponseEntity<ResultSet>.toResultSet(): Result<Unit, ResultSet> {
+private fun <T> ResponseEntity<T>.toResultSet(): Result<Unit, T> {
     return if (this.body != null) {
         Success(this.body!!)
     } else {

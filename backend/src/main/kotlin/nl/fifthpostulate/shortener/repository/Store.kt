@@ -8,12 +8,14 @@ import nl.fifthpostulate.shortener.store.Store
 
 class Store(val store: Store): ShortRepository<DataSheet?> {
     override fun load(short: String): DataSheet? {
-        return null
+        return when(val result = store.retrieve(short)) {
+            is Success -> result.data
+            is Failure -> null
+        }
     }
 
     override fun save(dataSheet: DataSheet): Result<String, DataSheet> {
-        val result = store.store(dataSheet)
-        return when(result) {
+        return when(val result = store.store(dataSheet)) {
             is Success -> Success(dataSheet)
             is Failure -> Failure(result.error)
         }

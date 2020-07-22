@@ -2,6 +2,7 @@ package nl.fifthpostulate.shortener.service.couchdb
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import nl.fifthpostulate.shortener.config.ShortDocument
+import nl.fifthpostulate.shortener.store.Event
 
 abstract class Document {
     abstract val id: String?
@@ -34,3 +35,10 @@ data class Attachment(
 }
 
 class ResultSet(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<ShortDocument>) {}
+
+class EventResultSet(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<Row<Event>>) {}
+class Row<T>() {
+    val id: String? = null
+    val key: String? = null
+    val value: T? = null
+}

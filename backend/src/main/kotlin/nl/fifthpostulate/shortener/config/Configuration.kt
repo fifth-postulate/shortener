@@ -12,6 +12,7 @@ import nl.fifthpostulate.shortener.short.ShortenStrategy
 import nl.fifthpostulate.shortener.short.StoreBacked
 import nl.fifthpostulate.shortener.short.successor
 import nl.fifthpostulate.shortener.store.CouchDB
+import nl.fifthpostulate.shortener.store.Event
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -69,3 +70,4 @@ fun lastShort(service: CouchDBService): Result<Unit, String> {
     }
 }
 class ShortDocument(val id:String, val key: String, val value: Int)
+class EventDocument(val id:String, val key: String, val value: Event)
