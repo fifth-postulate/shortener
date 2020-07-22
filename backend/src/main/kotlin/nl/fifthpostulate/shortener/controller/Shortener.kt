@@ -1,9 +1,9 @@
 package nl.fifthpostulate.shortener.controller
 
 import nl.fifthpostulate.shortener.domain.DataSheet
-import nl.fifthpostulate.shortener.repository.*
-import nl.fifthpostulate.shortener.short.ShortenStrategy
+import nl.fifthpostulate.shortener.repository.ShortRepository
 import nl.fifthpostulate.shortener.result.Result
+import nl.fifthpostulate.shortener.short.ShortenStrategy
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 

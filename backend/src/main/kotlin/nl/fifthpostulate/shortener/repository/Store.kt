@@ -1,9 +1,7 @@
 package nl.fifthpostulate.shortener.repository
 
 import nl.fifthpostulate.shortener.domain.DataSheet
-import nl.fifthpostulate.shortener.result.Failure
-import nl.fifthpostulate.shortener.result.Result
-import nl.fifthpostulate.shortener.result.Success
+import nl.fifthpostulate.shortener.result.*
 import nl.fifthpostulate.shortener.store.Store
 
 class Store(val store: Store): ShortRepository<DataSheet?> {

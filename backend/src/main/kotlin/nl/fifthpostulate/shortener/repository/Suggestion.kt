@@ -5,7 +5,7 @@ import nl.fifthpostulate.shortener.result.Success
 
 class Suggestion(val suggestionUrl: String): ShortRepository<DataSheet> {
     override fun load(short: String): DataSheet {
-        return DataSheet(short, suggestionUrl + short)
+        return DataSheet(short, "${suggestionUrl}${short}")
     }
 
     override fun save(dataSheet: DataSheet): Success<String, DataSheet> {

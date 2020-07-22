@@ -14,8 +14,7 @@ class CouchDB(val service: CouchDBService) : Store {
     }
 
     override fun store(dataSheet: DataSheet): Result<String, Unit> {
-        val event = Created(dataSheet)
-        return when (val result = service.save(event)) {
+        return when (val result = service.save(Created(dataSheet))) {
             is Success -> Success(result.data)
             is Failure -> Failure("could not store ${dataSheet}")
         }
