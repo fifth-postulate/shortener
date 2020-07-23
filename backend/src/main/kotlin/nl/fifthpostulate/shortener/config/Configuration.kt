@@ -7,12 +7,12 @@ import nl.fifthpostulate.shortener.result.Result
 import nl.fifthpostulate.shortener.result.Success
 import nl.fifthpostulate.shortener.service.couchdb.CouchDBService
 import nl.fifthpostulate.shortener.service.couchdb.Query
+import nl.fifthpostulate.shortener.service.couchdb.view
 import nl.fifthpostulate.shortener.short.Sequential
 import nl.fifthpostulate.shortener.short.ShortenStrategy
 import nl.fifthpostulate.shortener.short.StoreBacked
 import nl.fifthpostulate.shortener.short.successor
 import nl.fifthpostulate.shortener.store.CouchDB
-import nl.fifthpostulate.shortener.store.Event
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
@@ -60,7 +60,7 @@ enum class ShortenStrategyType {
 }
 
 fun lastShort(service: CouchDBService): Result<Unit, String> {
-    return when(val resultSet = service.view("_design/short/_view/shorts", Query("descending", true), Query("limit", 1))) {
+    return when(val resultSet = service.view<Int>("_design/short/_view/shorts", Query("descending", true), Query("limit", 1))) {
         is Success -> {
             val short = if (resultSet.data.rows.size > 0) { resultSet.data.rows[0].key ?: "zz" } else { "zz" }
             Success(short)

@@ -22,7 +22,7 @@ class CouchDB(val service: CouchDBService) : Store {
 
     override fun retrieve(short: String): Result<String, DataSheet> {
         // TODO make ResultSet return specific data.
-        val result = service.specialView("_design/short/_view/events", Query("startkey", short), Query("endkey", short))
+        val result = service.view<Event>("_design/short/_view/events", Query("startkey", short), Query("endkey", short))
         return when (result) {
             is Success -> {
                 val url = result.data.rows.filter { it.value?.type == "created" }.firstOrNull()?.value?.url
