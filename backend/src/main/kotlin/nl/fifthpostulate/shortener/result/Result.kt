@@ -21,6 +21,21 @@ sealed class Result<Error, Value>(val type: String) {
             is Failure -> Failure(error)
         }
     }
+
+    fun <T> mapError(transform: (Error) -> T): Result<T, Value> {
+        return when (this) {
+            is Success -> Success(data)
+            is Failure -> Failure(transform(error))
+        }
+    }
+
+    fun use(actOn: (Value) -> Unit): Result<Error, Value> {
+        when (this) {
+            is Success -> actOn(data)
+            is Failure -> Unit
+        }
+        return this
+    }
 }
 
 class Success<Error, Value>(val data: Value) : Result<Error, Value>("success")
