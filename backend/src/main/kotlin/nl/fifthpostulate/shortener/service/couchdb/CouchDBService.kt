@@ -11,7 +11,7 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
     fun save(document: Document): Result<Unit, Unit> {
         try {
             val response = restTemplate.exchange(properties.url, HttpMethod.POST, HttpEntity(document), Response::class.java)
-            return response.toResponseResult().ignore()
+            return response.toResult().andThen(::okResponse)
         } catch (e: HttpClientErrorException) {
             if (e.statusCode == HttpStatus.CONFLICT) {
                 return Failure(Unit)
@@ -29,7 +29,7 @@ inline fun <reified T> CouchDBService.view(viewName: String, vararg queries: Que
     return response.toResult()
 }
 
-fun <T> ResponseEntity<GenericResultSet<T>>.toResult(): Result<Unit, GenericResultSet<T>> {
+fun <T> ResponseEntity<T>.toResult(): Result<Unit, T> {
     return if (this.body != null) {
         Success(this.body!!)
     } else {
@@ -38,8 +38,8 @@ fun <T> ResponseEntity<GenericResultSet<T>>.toResult(): Result<Unit, GenericResu
 }
 
 
-private fun ResponseEntity<Response>.toResponseResult(): Result<Unit, Unit> {
-    return if (this.body?.ok == true) {
+fun okResponse(response: Response): Result<Unit, Unit> {
+    return if (response.ok ?: false) {
         Success(Unit)
     } else {
         Failure(Unit)

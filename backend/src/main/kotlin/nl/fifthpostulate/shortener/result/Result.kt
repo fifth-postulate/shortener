@@ -3,17 +3,23 @@ package nl.fifthpostulate.shortener.result
 sealed class Result<Error, Value>(val type: String) {
     fun withDefault(defaultValue: Value): Value {
         return when (this) {
-            is Success -> this.data
+            is Success -> data
             is Failure -> defaultValue
         }
     }
 
-    fun ignore(): Result<Error, Unit> {
+    fun <T> andThen(transform : (Value) -> Result<Error, T>): Result<Error, T> {
         return when (this) {
-            is Success -> Success(Unit)
+            is Success -> transform(data)
             is Failure -> Failure(error)
         }
+    }
 
+    fun <T> map(transform: (Value) -> T): Result<Error, T> {
+        return when (this) {
+            is Success -> Success(transform(data))
+            is Failure -> Failure(error)
+        }
     }
 }
 
