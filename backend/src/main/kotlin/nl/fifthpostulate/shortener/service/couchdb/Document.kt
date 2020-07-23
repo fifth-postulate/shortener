@@ -29,7 +29,7 @@ data class Attachment(
 }
 
 
-class GenericResultSet<T>(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<Row<T>>)
+class ResultSet<T>(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<Row<T>>)
 class Row<T> {
     val id: String? = null
     val key: String? = null

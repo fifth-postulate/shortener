@@ -22,7 +22,7 @@ class CouchDB(val service: CouchDBService) : Store {
         return service.view<Event>("_design/short/_view/events", Query("startkey", short), Query("endkey", short))
                 .mapError { "no events found for $short" }
                 .map { it.rows }
-                .map {rows -> rows.map {it.value}}
+                .map { rows -> rows.map {it.value} }
                 .map(toDataSheet(short))
                 .use { service.save(Retrieved(it)) }
     }

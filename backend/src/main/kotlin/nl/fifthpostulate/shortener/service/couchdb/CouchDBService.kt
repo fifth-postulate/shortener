@@ -21,11 +21,11 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
     }
 }
 
-inline fun <reified T> CouchDBService.view(viewName: String, vararg queries: Query): Result<Unit, GenericResultSet<T>> {
+inline fun <reified T> CouchDBService.view(viewName: String, vararg queries: Query): Result<Unit, ResultSet<T>> {
     val query = queries.joinToString("&")
     val url = "${properties.url}/${viewName}?${query}"
-    val type = ResolvableType.forClassWithGenerics(GenericResultSet::class.java, T::class.java)
-    val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), ParameterizedTypeReference.forType<GenericResultSet<T>>(type.type))
+    val type = ResolvableType.forClassWithGenerics(ResultSet::class.java, T::class.java)
+    val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), ParameterizedTypeReference.forType<ResultSet<T>>(type.type))
     return response.toResult()
 }
 
