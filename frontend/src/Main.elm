@@ -9,7 +9,7 @@ import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
 
 
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element
         { init = init
@@ -19,9 +19,16 @@ main =
         }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( NotAskedYet { server_url = "http://localhost:7478", url = "" }, Cmd.none )
+type alias Flags =
+    String
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( NotAskedYet { server_url = serverUrl flags, url = "" }, Cmd.none )
+
+serverUrl: Flags -> String
+serverUrl server_url =
+    server_url
 
 
 type Model
