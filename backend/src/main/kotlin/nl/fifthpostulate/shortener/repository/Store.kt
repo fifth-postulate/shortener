@@ -6,16 +6,17 @@ import nl.fifthpostulate.shortener.store.Store
 
 class Store(val store: Store): ShortRepository<DataSheet?> {
     override fun load(short: String): DataSheet? {
-        return when(val result = store.retrieve(short)) {
-            is Success -> result.data
-            is Failure -> null
-        }
+        return store.retrieve(short)
+                .map(::poorIdentity)
+                .withDefault(null)
     }
 
     override fun save(dataSheet: DataSheet): Result<String, DataSheet> {
-        return when(val result = store.store(dataSheet)) {
-            is Success -> Success(dataSheet)
-            is Failure -> Failure(result.error)
-        }
+        return store.store(dataSheet)
+                .map { dataSheet }
     }
+}
+
+fun poorIdentity(dataSheet: DataSheet): DataSheet? {
+    return dataSheet
 }
