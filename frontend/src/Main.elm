@@ -21,7 +21,7 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( NotAskedYet { url = "" }, Cmd.none )
+    ( NotAskedYet { server_url = "http://localhost:7478", url = "" }, Cmd.none )
 
 
 type Model
@@ -33,7 +33,9 @@ type Model
 
 
 type alias ShortCommand =
-    { url : String }
+    { server_url : String
+    , url : String
+    }
 
 
 type ShortenOutcome
@@ -42,7 +44,9 @@ type ShortenOutcome
 
 
 type alias DataSheet =
-    { short : String, url : String }
+    { short : String
+    , url : String
+    }
 
 
 view : Model -> Html Msg
@@ -54,8 +58,8 @@ view model =
         Shortening ->
             shorteningView
 
-        Failure error ->
-            whoops "Problems with retrieving a response" 
+        Failure _ ->
+            whoops "Problems with retrieving a response"
 
         Success (Shortened sheet) ->
             successView sheet
@@ -68,7 +72,7 @@ view model =
 
 
 askUrlView : ShortCommand -> Html Msg
-askUrlView command =
+askUrlView _ =
     Html.div []
         [ Html.input
             [ Attribute.type_ "text"
@@ -118,7 +122,7 @@ update message model =
             let
                 cmd =
                     Http.post
-                        { url = "http://localhost:7478"
+                        { url = command.server_url
                         , body = Http.jsonBody <| encode command
                         , expect = Http.expectJson Received outcomeDecoder
                         }

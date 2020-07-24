@@ -10717,7 +10717,7 @@ var $author$project$Main$NotAskedYet = function (a) {
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		$author$project$Main$NotAskedYet(
-			{url: ''}),
+			{server_url: 'http://localhost:7478', url: ''}),
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -11057,7 +11057,7 @@ var $author$project$Main$update = F2(
 								body: $elm$http$Http$jsonBody(
 									$author$project$Main$encode(command)),
 								expect: A2($elm$http$Http$expectJson, $author$project$Main$Received, $author$project$Main$outcomeDecoder),
-								url: 'http://localhost:7478'
+								url: command.server_url
 							});
 						return _Utils_Tuple2($author$project$Main$Shortening, cmd);
 					} else {
@@ -11091,7 +11091,7 @@ var $author$project$Main$InputUpdated = function (a) {
 var $author$project$Main$Shorten = {$: 'Shorten'};
 var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $author$project$Main$askUrlView = function (command) {
+var $author$project$Main$askUrlView = function (_v0) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -11178,7 +11178,6 @@ var $author$project$Main$view = function (model) {
 		case 'Shortening':
 			return $author$project$Main$shorteningView;
 		case 'Failure':
-			var error = model.a;
 			return $author$project$Main$whoops('Problems with retrieving a response');
 		case 'Success':
 			if (model.a.$ === 'Shortened') {
