@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "nl.fifth-postulate"
-version = "0.0.1-SNAPSHOT"
+version = "latest"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {

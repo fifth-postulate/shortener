@@ -3,13 +3,13 @@ http:
 
 repository:
   type: Store
-  fallBackUrl: https://shorten.fifth-postulate.nl
-  suggestionUrl: https://shorten.fifth-postulate.nl/
+  fallBackUrl: https://dvb.usef-dynamo.nl
+  suggestionUrl: https://dvb.usef-dynamo.nl/
 
 shortenstrategy:
   type: StoreBacked
 
 couchdb:
-  url: http://localhost:5984/shortener
-  username: admin
-  password: password
+  url: ${COUCHDB_URL}
+  username: ${COUCHDB_USERNAME}
+  password: ${COUCHDB_PASSWORD}
