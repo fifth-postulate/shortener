@@ -10714,10 +10714,16 @@ var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$NotAskedYet = function (a) {
 	return {$: 'NotAskedYet', a: a};
 };
-var $author$project$Main$init = function (_v0) {
+var $author$project$Main$serverUrl = function (server_url) {
+	return server_url;
+};
+var $author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
 		$author$project$Main$NotAskedYet(
-			{server_url: 'http://localhost:7478', url: ''}),
+			{
+				server_url: $author$project$Main$serverUrl(flags),
+				url: ''
+			}),
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -11193,5 +11199,4 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.DataSheet":{"args":[],"type":"{ short : String.String, url : String.String }"}},"unions":{"Main.Msg":{"args":[],"tags":{"InputUpdated":["String.String"],"Shorten":[],"Received":["Result.Result Http.Error Main.ShortenOutcome"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.ShortenOutcome":{"args":[],"tags":{"Shortened":["Main.DataSheet"],"Problem":["String.String"]}},"String.String":{"args":[],"tags":{"String":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}}}}})}});}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.DataSheet":{"args":[],"type":"{ short : String.String, url : String.String }"}},"unions":{"Main.Msg":{"args":[],"tags":{"InputUpdated":["String.String"],"Shorten":[],"Received":["Result.Result Http.Error Main.ShortenOutcome"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.ShortenOutcome":{"args":[],"tags":{"Shortened":["Main.DataSheet"],"Problem":["String.String"]}},"String.String":{"args":[],"tags":{"String":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}}}}})}});}(this));
