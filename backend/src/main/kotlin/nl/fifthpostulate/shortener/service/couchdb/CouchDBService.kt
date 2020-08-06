@@ -1,6 +1,7 @@
 package nl.fifthpostulate.shortener.service.couchdb
 
 import nl.fifthpostulate.shortener.result.*
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.*
 import org.springframework.http.*
 import org.springframework.stereotype.Component
@@ -21,11 +22,11 @@ class CouchDBService(val restTemplate: RestTemplate, val properties: ConnectionP
     }
 }
 
-inline fun <reified T> CouchDBService.view(viewName: String, vararg queries: Query): Result<Unit, ResultSet<T>> {
+inline fun <reified Key, reified Value> CouchDBService.view(viewName: String, vararg queries: Query): Result<Unit, ResultSet<Key, Value>> {
     val query = queries.joinToString("&")
     val url = "${properties.url}/${viewName}?${query}"
-    val type = ResolvableType.forClassWithGenerics(ResultSet::class.java, T::class.java)
-    val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), ParameterizedTypeReference.forType<ResultSet<T>>(type.type))
+    val type = ResolvableType.forClassWithGenerics(ResultSet::class.java, Key::class.java, Value::class.java)
+    val response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity(null, null), ParameterizedTypeReference.forType<ResultSet<Key, Value>>(type.type))
     return response.toResult()
 }
 
@@ -58,6 +59,7 @@ data class Query(val key: String, val value: QueryValue) {
     constructor(key: String, value: String) : this(key, StringValue(value))
     constructor(key: String, value: Int) : this(key, IntValue(value))
     constructor(key: String, value: Boolean) : this(key, BooleanValue(value))
+    constructor(key: String, vararg values: QueryValue): this(key, CompoundValue(*values))
 
     override fun toString(): String {
         return "$key=$value"
@@ -80,5 +82,11 @@ data class IntValue(val value: Int) : QueryValue() {
 data class BooleanValue(val value: Boolean) : QueryValue() {
     override fun toString(): String {
         return "$value"
+    }
+}
+
+class CompoundValue(vararg val values: QueryValue): QueryValue() {
+    override fun toString(): String {
+        return "[${values.joinToString(",")}]"
     }
 }

@@ -29,9 +29,9 @@ data class Attachment(
 }
 
 
-class ResultSet<T>(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<Row<T>>)
-class Row<T> {
+class ResultSet<Key, Value>(@JsonProperty("total_rows") val totalRows: Int, val offset: Int, val rows: List<Row<Key, Value>>)
+class Row<Key, Value> {
     val id: String? = null
-    val key: String? = null
-    val value: T? = null
+    val key: Key? = null
+    val value: Value? = null
 }

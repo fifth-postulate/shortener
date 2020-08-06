@@ -60,7 +60,7 @@ enum class ShortenStrategyType {
 }
 
 fun lastShort(service: CouchDBService): Result<Unit, String> {
-    return when(val resultSet = service.view<Int>("_design/short/_view/shorts", Query("descending", true), Query("limit", 1))) {
+    return when(val resultSet = service.view<String, Int>("_design/short/_view/shorts", Query("descending", true), Query("limit", 1))) {
         is Success -> {
             val short = if (resultSet.data.rows.size > 0) { resultSet.data.rows[0].key ?: "zz" } else { "zz" }
             Success(short)

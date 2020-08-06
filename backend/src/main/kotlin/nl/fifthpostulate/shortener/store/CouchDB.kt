@@ -2,6 +2,7 @@ package nl.fifthpostulate.shortener.store
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped
 import nl.fifthpostulate.shortener.domain.DataSheet
+import nl.fifthpostulate.shortener.jackson.CompoundKey
 import nl.fifthpostulate.shortener.result.*
 import nl.fifthpostulate.shortener.service.couchdb.*
 import org.springframework.stereotype.Component
@@ -19,7 +20,7 @@ class CouchDB(val service: CouchDBService) : Store {
     }
 
     override fun retrieve(short: String): Result<String, DataSheet> {
-        return service.view<Event>("_design/short/_view/events", Query("startkey", short), Query("endkey", short))
+        return service.view<CompoundKey, Event>("_design/short/_view/events", Query("startkey", StringValue(short), IntValue(0)), Query("endkey", StringValue(short), IntValue(1)))
                 .mapError { "no events found for $short" }
                 .map { it.rows }
                 .map { rows -> rows.map {it.value} }
